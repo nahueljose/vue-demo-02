@@ -1,28 +1,52 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <h1>Mi lista de tareas</h1>
+
+    <NuevaTarea @nueva-tarea="guardarTarea" />
+    <ListaTareas @click-tarea="completarTarea" :tareas="tareas" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import NuevaTarea from './components/NuevaTarea.vue';
+import ListaTareas from './components/ListaTareas.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    NuevaTarea,
+    ListaTareas
+  },
+  data: function() {
+    return {
+      tareas: []
+    }
+  },
+  methods: {
+    /**
+     * Guardar tareas
+     */
+    guardarTarea(texto){
+      this.tareas.push({
+        id: Math.random(),
+        label: texto,
+        completada: false
+      });
+    },
+    /**
+     * Método para completar tareas
+     */
+    completarTarea(idTarea) {
+      this.tareas.forEach(tarea => {
+        if (idTarea === tarea.id) {
+          tarea.completada = !tarea.completada
+        }
+      })
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
